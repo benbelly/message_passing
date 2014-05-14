@@ -1,7 +1,7 @@
 #include "thread_pool.h"
 #include <iostream>
 
-namespace concurrency {
+namespace message_passing {
 
 work_queue::~work_queue() {
     // Lock just to be nice. Shouldn't be contended...

@@ -1,12 +1,12 @@
-#ifndef CONCURRENCY_THREAD_POOL_
-#define CONCURRENCY_THREAD_POOL_
+#ifndef MESSAGE_PASSING_THREAD_POOL_
+#define MESSAGE_PASSING_THREAD_POOL_
 
 #include "work_queue.h"
 #include<thread>
 #include<mutex>
 #include<queue>
 
-namespace concurrency {
+namespace message_passing {
 
 class work_queue : public work_queue_interface {
     public:

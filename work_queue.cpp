@@ -2,7 +2,7 @@
 #include "work_queue.h"
 #include "thread_pool.h"
 
-namespace concurrency {
+namespace message_passing {
 
 work_interface::work_interface() { }
 work_interface::~work_interface() {}

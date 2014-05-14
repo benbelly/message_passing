@@ -1,11 +1,10 @@
-#ifndef CONCURRENCY_WORK_QUEUE_
-#define CONCURRENCY_WORK_QUEUE_
+#ifndef MESSAGE_PASSING_WORK_QUEUE_
+#define MESSAGE_PASSING_WORK_QUEUE_
 
 #include <memory>
 #include <functional>
 
-/* TODO - Rename this! Anything would be better */
-namespace concurrency {
+namespace message_passing {
 
 /*
  * Interface to hold work that needs done.

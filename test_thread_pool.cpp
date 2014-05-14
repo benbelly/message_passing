@@ -5,14 +5,15 @@
 #include<thread>
 #include<chrono>
 
-void pause( int duration ) {
-    std::this_thread::sleep_for( std::chrono::milliseconds( duration ) );
+void pause( int duration_milliseconds ) {
+    std::this_thread::sleep_for( 
+            std::chrono::milliseconds( duration_milliseconds ) );
 }
 
 bool basic_async_work() {
-    auto q = concurrency::get_work_queue();
+    auto q = message_passing::get_work_queue();
     bool success = false;
-    concurrency::do_work( q, [&]() { success = true; } );
+    message_passing::do_work( q, [&]() { success = true; } );
     pause( 100 );
     return success;
 }
