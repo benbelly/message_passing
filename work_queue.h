@@ -32,6 +32,11 @@ class work_queue_interface {
  * Get a queue of work to be done asynchronously.
  */
 std::shared_ptr<work_queue_interface> get_work_queue();
+/*
+ * Get a queue of work to be done asynchronously, with a maximum of
+ * 'num_concurrent_items' executing simultaneously.
+ */
+std::shared_ptr<work_queue_interface> get_work_queue( int num_concurrent_items);
 
 /*
  * This helper function adds a function to a work_queue_interface.

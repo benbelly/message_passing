@@ -74,6 +74,7 @@ void thread_pool::run_thread() {
     while( running ) {
         auto work_item = queue->dequeue();
         if( work_item ) work_item->do_work();
+        //else std::cout << "That's weird\n";
     }
 }
 

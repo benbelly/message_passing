@@ -4,28 +4,38 @@
 
 namespace message_passing {
 
+using std::shared_ptr;
+using std::unique_ptr;
+using std::function;
+
 work_interface::work_interface() { }
 work_interface::~work_interface() {}
 
 work_queue_interface::work_queue_interface() {}
 work_queue_interface::~work_queue_interface() {}
 
-std::shared_ptr<work_queue_interface> get_work_queue() {
+shared_ptr<work_queue_interface> get_work_queue() {
     static thread_pool pool;
     pool.start();
     return pool.get_work_queue();
 }
 
+shared_ptr<work_queue_interface> get_work_queue( int num_concurrent_items) {
+    static thread_pool pool( num_concurrent_items );
+    pool.start();
+    return pool.get_work_queue();
+}
+
 struct function_work : work_interface {
-        function_work( const std::function<void ()> &f ) : work( f ) {}
+        function_work( const function<void ()> &f ) : work( f ) {}
         virtual ~function_work() {}
         virtual void do_work() { work(); }
-        std::function<void ()> work;
+        function<void ()> work;
 };
 
-void do_work( std::shared_ptr<work_queue_interface> &queue,
-              const std::function<void ()> &work_func ) {
-    std::unique_ptr<work_interface> work_ptr( new function_work( work_func ) );
+void do_work( shared_ptr<work_queue_interface> &queue,
+              const function<void ()> &work_func ) {
+    unique_ptr<work_interface> work_ptr( new function_work( work_func ) );
     queue->enqueue( work_ptr );
 }
 
