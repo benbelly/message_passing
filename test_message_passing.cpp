@@ -1,6 +1,6 @@
 
-#include "test_thread_pool.h"
-#include "thread_pool.h"
+#include "test_message_passing.h"
+#include "work_queue.h"
 #include<iostream>
 #include<thread>
 #include<chrono>
