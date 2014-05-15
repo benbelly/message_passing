@@ -1,5 +1,5 @@
 #include "test_message_passing.h"
-#include "work_queue.h"
+#include "message_passing_interfaces.h"
 #include<iostream>
 #include<thread>
 #include<chrono>
@@ -44,7 +44,7 @@ bool basic_pooled_work() {
                                                lock_guard guard( m );
                                                fs.push_back( 4 ); } );
 
-    pause( 700 );
+    pause( 800 );
 
     success = expected == fs;
 

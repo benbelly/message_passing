@@ -1,7 +1,7 @@
 #ifndef MESSAGE_PASSING_THREAD_POOL_
 #define MESSAGE_PASSING_THREAD_POOL_
 
-#include "work_queue.h"
+#include "message_passing_interfaces.h"
 #include<thread>
 #include<mutex>
 #include<queue>
@@ -11,7 +11,7 @@ namespace message_passing {
 class work_queue : public work_queue_interface {
     public:
         virtual ~work_queue();
-        void enqueue( std::unique_ptr<work_item_interface> &work_item );
+        virtual void enqueue( std::unique_ptr<work_item_interface> &work_item );
 
     private:
         friend class thread_pool;
@@ -19,6 +19,7 @@ class work_queue : public work_queue_interface {
 
         work_interface_ptr dequeue();
         void release() { queue_signal.notify_all(); }
+
         work_interface_ptr get_next();
 
         std::mutex queue_mutex;

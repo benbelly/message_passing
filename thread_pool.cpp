@@ -1,10 +1,8 @@
 #include "thread_pool.h"
-#include <iostream>
 
 namespace message_passing {
 
 work_queue::~work_queue() {
-    // Lock just to be nice. Shouldn't be contended...
     std::lock_guard<std::mutex> lock( queue_mutex );
     while( !queue.empty() ) queue.pop();
 }
