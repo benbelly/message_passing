@@ -9,7 +9,7 @@ work_queue::~work_queue() {
     while( !queue.empty() ) queue.pop();
 }
 
-void work_queue::enqueue( std::unique_ptr<work_interface> &work_item ) {
+void work_queue::enqueue( std::unique_ptr<work_item_interface> &work_item ) {
     {
         std::lock_guard<std::mutex> lock( queue_mutex );
         queue.push( std::move( work_item ) );
@@ -17,7 +17,7 @@ void work_queue::enqueue( std::unique_ptr<work_interface> &work_item ) {
     queue_signal.notify_all();
 }
 
-std::unique_ptr<work_interface> work_queue::dequeue() {
+std::unique_ptr<work_item_interface> work_queue::dequeue() {
     std::unique_lock<std::mutex> lock( queue_mutex );
     auto work_item = get_next();
     if( !work_item ) { // try once to wait for data
@@ -63,9 +63,11 @@ thread_pool::~thread_pool() {
 void thread_pool::start() {
     std::lock_guard<std::mutex> lock( thread_lock );
     if( !running ) {
-        std::unique_ptr<std::thread> new_thread(
-                new std::thread( [this]() { this->run_thread(); } ) );
-        threads.push_back( std::move( new_thread ) );
+        for( int i = 0; i < max_threads; ++i ) {
+            std::unique_ptr<std::thread> new_thread(
+                    new std::thread( [this]() { this->run_thread(); } ) );
+            threads.push_back( std::move( new_thread ) );
+        }
         running = true;
     }
 }
@@ -74,7 +76,6 @@ void thread_pool::run_thread() {
     while( running ) {
         auto work_item = queue->dequeue();
         if( work_item ) work_item->do_work();
-        //else std::cout << "That's weird\n";
     }
 }
 

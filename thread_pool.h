@@ -11,11 +11,11 @@ namespace message_passing {
 class work_queue : public work_queue_interface {
     public:
         virtual ~work_queue();
-        void enqueue( std::unique_ptr<work_interface> &work_item );
+        void enqueue( std::unique_ptr<work_item_interface> &work_item );
 
     private:
         friend class thread_pool;
-        typedef std::unique_ptr<work_interface> work_interface_ptr;
+        typedef std::unique_ptr<work_item_interface> work_interface_ptr;
 
         work_interface_ptr dequeue();
         void release() { queue_signal.notify_all(); }
@@ -34,7 +34,9 @@ class thread_pool {
 
         void start();
 
-        std::shared_ptr<work_queue_interface> get_work_queue() const { return queue; }
+        std::shared_ptr<work_queue_interface> get_work_queue() const {
+            return queue;
+        }
 
     private:
         int max_threads;
