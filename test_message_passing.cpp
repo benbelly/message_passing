@@ -51,10 +51,38 @@ bool basic_pooled_work() {
     return success;
 }
 
+bool basic_serialized_queue() {
+    bool success = false;
+    auto q = message_passing::get_serialized_queue();
+
+    /* Start one, then two, then three
+     * They finish in order, because the queue is serialized, executing each
+     * item in the order it is received.
+     */
+    std::vector<int> expected = { 1, 2, 3 }, fs;
+    fs.reserve( 3 ); // Probably not needed, but I don't want to realloc
+
+    std::mutex m;
+
+    message_passing::do_work( q, [&m, &fs]() { pause( 50 );
+                                               fs.push_back( 1 ); } );
+    message_passing::do_work( q, [&m, &fs]() { pause( 30 );
+                                               fs.push_back( 2 ); } );
+    message_passing::do_work( q, [&m, &fs]() { pause( 10 );
+                                               fs.push_back( 3 ); } );
+
+    pause( 200 );
+
+    success = expected == fs;
+
+    return success;
+}
+
 int main() { 
     typedef std::function<bool ()> test_func;
 
-    test_func tests[] = { basic_async_work, basic_pooled_work };
+    test_func tests[] = { basic_async_work, basic_pooled_work,
+                          basic_serialized_queue };
 
     int tests_count = sizeof( tests ) / sizeof( test_func );
     test_func *tests_end = tests + tests_count;

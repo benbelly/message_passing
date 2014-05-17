@@ -15,16 +15,18 @@ class work_queue : public work_queue_interface {
 
     private:
         friend class thread_pool;
-        typedef std::unique_ptr<work_item_interface> work_interface_ptr;
+        work_queue();
 
-        work_interface_ptr dequeue();
+        typedef std::unique_ptr<work_item_interface> work_item_interface_ptr;
+
+        work_item_interface_ptr dequeue();
         void release() { queue_signal.notify_all(); }
 
-        work_interface_ptr get_next();
+        work_item_interface_ptr get_next();
 
         std::mutex queue_mutex;
         std::condition_variable queue_signal;
-        std::queue<work_interface_ptr> queue;
+        std::queue<work_item_interface_ptr> queue;
 };
 
 class thread_pool {
@@ -41,7 +43,6 @@ class thread_pool {
 
     private:
         int max_threads;
-        std::mutex thread_lock;
         std::vector<std::unique_ptr<std::thread>> threads;
         std::shared_ptr<work_queue> queue;
 

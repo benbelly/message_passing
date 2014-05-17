@@ -2,6 +2,8 @@
 
 namespace message_passing {
 
+work_queue::work_queue() { }
+
 work_queue::~work_queue() {
     std::lock_guard<std::mutex> lock( queue_mutex );
     while( !queue.empty() ) queue.pop();
@@ -30,8 +32,8 @@ std::unique_ptr<work_item_interface> work_queue::dequeue() {
  * is nothing available.
  * Does not do locking - only queue access.
  */
-work_queue::work_interface_ptr work_queue::get_next() {
-    work_interface_ptr work_item( nullptr );
+work_queue::work_item_interface_ptr work_queue::get_next() {
+    work_item_interface_ptr work_item( nullptr );
     if( !queue.empty() ) {
         work_item = std::move( queue.front() );
         queue.pop();
@@ -58,12 +60,15 @@ thread_pool::~thread_pool() {
     for( auto &t : threads ) { t->join(); }
 }
 
+/*
+ * Problems here with exceptions, if the third thread instantiation throws,
+ * we're in a bad way. Clean up?
+ */
 void thread_pool::start() {
-    std::lock_guard<std::mutex> lock( thread_lock );
     if( !running ) {
         for( int i = 0; i < max_threads; ++i ) {
             std::unique_ptr<std::thread> new_thread(
-                    new std::thread( [this]() { this->run_thread(); } ) );
+                    new std::thread( &thread_pool::run_thread, this ) );
             threads.push_back( std::move( new_thread ) );
         }
         running = true;

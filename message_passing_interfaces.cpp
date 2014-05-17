@@ -26,6 +26,12 @@ shared_ptr<work_queue_interface> get_work_queue( int num_concurrent_items) {
     return pool.get_work_queue();
 }
 
+std::shared_ptr<work_queue_interface> get_serialized_queue() {
+    static thread_pool pool( 1 );
+    pool.start();
+    return pool.get_work_queue();
+}
+
 struct work_item_function : public work_item_interface {
         work_item_function( const function<void ()> &f ) : work( f ) {}
         virtual ~work_item_function() {}
@@ -36,7 +42,7 @@ struct work_item_function : public work_item_interface {
 void do_work( shared_ptr<work_queue_interface> &queue,
               const function<void ()> &work_function ) {
     unique_ptr<work_item_interface> work_item_ptr(
-            new work_item_function( work_function ) );
+                    new work_item_function( work_function ) );
     queue->enqueue( work_item_ptr );
 }
 
