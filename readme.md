@@ -27,10 +27,10 @@ around exception safety, I'm happy to hear them.
 
 How to use:
 -
-# #include"message_passing_interfaces.h"
-# Link against libmessagepassing.a
-# Use `get_work_queue()` to get a work queue.
-# Call `add_work( queue, std::function )` to call that function asynchronously.
+1. `#include"message_passing_interfaces.h"`
+2. Link against libmessagepassing.a
+3. Use `get_work_queue()` to get a work queue.
+4. Call `do_work( queue, std::function )` to call that function asynchronously.
 
 Requirements:
 -
