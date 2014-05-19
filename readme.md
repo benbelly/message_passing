@@ -8,14 +8,14 @@ supports concurrency.
 Direct use of threading primitives (mutexes, locks, condition variables,
 threads) to manage concurrency does not work well for a team of more than one.
 Even a single developer will find that taking a break from a project for few
-weeks will require re-learing the concurrency rules for a system built on
+weeks will require re-learning the concurrency rules for a system built on
 primitives. Nevertheless, I see a lot of code like this. The goal of this
 library is to demonstrate how one can encapsulate the primitives behind a
 small set of classes or functions to create a scalable, message-passing
 concurrency model that supports asynchronous protocols between actors.
 
 The goal is *not* to provide a cross-platform, every possible use, robust for
-every occassion library. It is an example to build from and support
+every occasion library. It is an example to build from and support
 discussion.
 
 *A note on exceptions.* C++ has a problem with exceptions. They are just
@@ -33,7 +33,7 @@ Requirements:
 * In many cases, degree of parallelization (e.g. how many threads could be
   supported) is a domain consideration, not a generic library concern. This
   number should be provided by client code when desired.
-* Serialization of certain messages is required in order to support an
+* Serialization of messages is required in order to support an
   Active Object pattern.
 
 
