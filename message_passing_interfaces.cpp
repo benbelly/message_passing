@@ -39,8 +39,8 @@ struct work_item_function : public work_item_interface {
     function<void ()> work;
 };
 
-void do_work( shared_ptr<work_queue_interface> &queue,
-              const function<void ()> &work_function ) {
+void add_work( shared_ptr<work_queue_interface> &queue,
+               const function<void ()> &work_function ) {
     unique_ptr<work_item_interface> work_item_ptr(
                     new work_item_function( work_function ) );
     queue->enqueue( work_item_ptr );

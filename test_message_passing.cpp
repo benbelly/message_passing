@@ -17,7 +17,7 @@ void pause( int duration_milliseconds ) {
 bool basic_async_work() {
     bool success = false;
     auto q = message_passing::get_work_queue();
-    message_passing::do_work( q, [&]() { success = true; } );
+    message_passing::add_work( q, [&]() { success = true; } );
     pause( 10 );
     return success;
 }
@@ -33,16 +33,16 @@ bool basic_pooled_work() {
 
     mutex m;
 
-    message_passing::do_work( q, [&m, &fs]() { pause( 500 );
+    message_passing::add_work( q, [&m, &fs]() { pause( 500 );
                                                lock_guard guard( m );
                                                fs.push_back( 1 ); } );
-    message_passing::do_work( q, [&m, &fs]() { pause( 300 );
+    message_passing::add_work( q, [&m, &fs]() { pause( 300 );
                                                lock_guard guard( m );
                                                fs.push_back( 2 ); } );
-    message_passing::do_work( q, [&m, &fs]() { pause( 100 );
+    message_passing::add_work( q, [&m, &fs]() { pause( 100 );
                                                lock_guard guard( m );
                                                fs.push_back( 3 ); } );
-    message_passing::do_work( q, [&m, &fs]() { pause( 410 );
+    message_passing::add_work( q, [&m, &fs]() { pause( 410 );
                                                lock_guard guard( m );
                                                fs.push_back( 4 ); } );
 
@@ -66,11 +66,11 @@ bool basic_serialized_queue() {
 
     mutex m;
 
-    message_passing::do_work( q, [&m, &fs]() { pause( 50 );
+    message_passing::add_work( q, [&m, &fs]() { pause( 50 );
                                                fs.push_back( 1 ); } );
-    message_passing::do_work( q, [&m, &fs]() { pause( 30 );
+    message_passing::add_work( q, [&m, &fs]() { pause( 30 );
                                                fs.push_back( 2 ); } );
-    message_passing::do_work( q, [&m, &fs]() { pause( 10 );
+    message_passing::add_work( q, [&m, &fs]() { pause( 10 );
                                                fs.push_back( 3 ); } );
 
     pause( 120 );

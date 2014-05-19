@@ -1,5 +1,5 @@
-#ifndef MESSAGE_PASSING_WORK_QUEUE_
-#define MESSAGE_PASSING_WORK_QUEUE_
+#ifndef MESSAGE_PASSING_INTERFACES_
+#define MESSAGE_PASSING_INTERFACES_
 
 #include <memory>
 #include <functional>
@@ -49,8 +49,8 @@ std::shared_ptr<work_queue_interface> get_serialized_queue();
  * Add a function to a work_queue_interface.
  * The provided function will be executed asynchronously.
  */
-void do_work( std::shared_ptr<work_queue_interface> &queue,
-              const std::function<void ()> &work_func );
+void add_work( std::shared_ptr<work_queue_interface> &queue,
+               const std::function<void ()> &work_func );
 
 }
 
