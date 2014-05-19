@@ -33,10 +33,10 @@ std::shared_ptr<work_queue_interface> get_serialized_queue() {
 }
 
 struct work_item_function : public work_item_interface {
-        work_item_function( const function<void ()> &f ) : work( f ) {}
-        virtual ~work_item_function() {}
-        virtual void do_work() { work(); }
-        function<void ()> work;
+    work_item_function( const function<void ()> &f ) : work( f ) {}
+    virtual ~work_item_function() {}
+    virtual void do_work() { work(); }
+    function<void ()> work;
 };
 
 void do_work( shared_ptr<work_queue_interface> &queue,

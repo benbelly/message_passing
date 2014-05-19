@@ -6,6 +6,8 @@
 #include<vector>
 
 typedef std::lock_guard<std::mutex> lock_guard;
+using std::vector;
+using std::mutex;
 
 void pause( int duration_milliseconds ) {
     std::this_thread::sleep_for( 
@@ -26,10 +28,10 @@ bool basic_pooled_work() {
 
     /* Start one, then two, then three, then four.
      * The first three finish in reverse order, followed by the fourth */
-    std::vector<int> expected = { 3, 2, 1, 4 }, fs;
+    vector<int> expected = { 3, 2, 1, 4 }, fs;
     fs.reserve( 4 ); // Probably not needed, but I don't want to realloc
 
-    std::mutex m;
+    mutex m;
 
     message_passing::do_work( q, [&m, &fs]() { pause( 500 );
                                                lock_guard guard( m );
@@ -59,10 +61,10 @@ bool basic_serialized_queue() {
      * They finish in order, because the queue is serialized, executing each
      * item in the order it is received.
      */
-    std::vector<int> expected = { 1, 2, 3 }, fs;
+    vector<int> expected = { 1, 2, 3 }, fs;
     fs.reserve( 3 ); // Probably not needed, but I don't want to realloc
 
-    std::mutex m;
+    mutex m;
 
     message_passing::do_work( q, [&m, &fs]() { pause( 50 );
                                                fs.push_back( 1 ); } );
@@ -71,7 +73,7 @@ bool basic_serialized_queue() {
     message_passing::do_work( q, [&m, &fs]() { pause( 10 );
                                                fs.push_back( 3 ); } );
 
-    pause( 200 );
+    pause( 120 );
 
     success = expected == fs;
 
@@ -90,6 +92,6 @@ int main() {
                                 [](test_func f){ return f(); } );
 
     std::cout << passed << " passed of " << tests_count << " run.\n";
-    return passed == tests_count ? 0 : tests_count - passed;
+    return tests_count - passed;
 }
 

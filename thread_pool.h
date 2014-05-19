@@ -46,9 +46,12 @@ class thread_pool {
         std::vector<std::unique_ptr<std::thread>> threads;
         std::shared_ptr<work_queue> queue;
 
-        volatile bool running;
-
         void run_thread();
+
+        bool is_running();
+        void set_running( bool now_running );
+        bool running;
+        std::mutex running_mutex;
 };
 
 }

@@ -2,16 +2,18 @@
 
 namespace message_passing {
 
+typedef std::lock_guard<std::mutex> lock_guard;
+
 work_queue::work_queue() { }
 
 work_queue::~work_queue() {
-    std::lock_guard<std::mutex> lock( queue_mutex );
+    lock_guard lock( queue_mutex );
     while( !queue.empty() ) queue.pop();
 }
 
 void work_queue::enqueue( std::unique_ptr<work_item_interface> &work_item ) {
     {
-        std::lock_guard<std::mutex> lock( queue_mutex );
+        lock_guard lock( queue_mutex );
         queue.push( std::move( work_item ) );
     }
     queue_signal.notify_all();
@@ -55,7 +57,7 @@ thread_pool::thread_pool( int thread_count ) :
 }
 
 thread_pool::~thread_pool() {
-    running = false;
+    set_running( false );
     queue->release();
     for( auto &t : threads ) { t->join(); }
 }
@@ -65,7 +67,8 @@ thread_pool::~thread_pool() {
  * we're in a bad way. Clean up?
  */
 void thread_pool::start() {
-    if( !running ) {
+    if( !is_running() ) {
+        lock_guard lk( running_mutex );
         for( int i = 0; i < max_threads; ++i ) {
             std::unique_ptr<std::thread> new_thread(
                     new std::thread( &thread_pool::run_thread, this ) );
@@ -76,10 +79,20 @@ void thread_pool::start() {
 }
 
 void thread_pool::run_thread() {
-    while( running ) {
+    while( is_running() ) {
         auto work_item = queue->dequeue();
         if( work_item ) work_item->do_work();
     }
+}
+
+bool thread_pool::is_running() {
+    lock_guard lk( running_mutex );
+    return running;
+}
+
+void thread_pool::set_running( bool now_running ) {
+    lock_guard lk( running_mutex );
+    running = now_running;
 }
 
 }
