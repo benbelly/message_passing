@@ -25,6 +25,13 @@ to write correct C++ exception-safe code. The language is broken, and I
 advise you to just turn exceptions off. Nevertheless, if you have suggestions
 around exception safety, I'm happy to hear them.
 
+How to use:
+-
+# #include"message_passing_interfaces.h"
+# Link against libmessagepassing.a
+# Use `get_work_queue()` to get a work queue.
+# Call `do_work( queue, std::function )` to call that function asynchronously.
+
 Requirements:
 -
 * Use as few third-party libraries as possible. (C++ standard library is fine.)
