@@ -30,7 +30,7 @@ How to use:
 1. `#include"message_passing_interfaces.h"`
 2. Link against libmessagepassing.a
 3. Use `get_work_queue()` to get a work queue.
-4. Call `do_work( queue, std::function )` to call that function asynchronously.
+4. Call `add_work( queue, std::function )` to call that function asynchronously.
 
 Requirements:
 -
