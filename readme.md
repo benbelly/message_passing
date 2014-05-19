@@ -25,6 +25,12 @@ to write correct C++ exception-safe code. The language is broken, and I
 advise you to just turn exceptions off. Nevertheless, if you have suggestions
 around exception safety, I'm happy to hear them.
 
+Building:
+-
+I built this on a Macbook Pro running OSX Mavericks using clang++. I expect it would build just fine on Linux, or even Windows. But I haven't tested it yet.
+
+Anyway, just run `make`, or `make -f Makefile` to build and run the test. Output goes to the `build/lib` and `build/include` directory.
+
 How to use:
 -
 1. `#include"message_passing_interfaces.h"`
