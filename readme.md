@@ -3,7 +3,7 @@ An Example Message Passing Library
 =
 
 I wrote this library to provide an example of a message passing system that
-supports concurrency.
+supports concurrency in order to aid discussion.
 
 Direct use of threading primitives (mutexes, locks, condition variables,
 threads) to manage concurrency does not work well for a team of more than one.

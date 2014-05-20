@@ -46,7 +46,7 @@ bool basic_pooled_work() {
                                                lock_guard guard( m );
                                                fs.push_back( 4 ); } );
 
-    pause( 800 );
+    pause( 600 );
 
     success = expected == fs;
 
