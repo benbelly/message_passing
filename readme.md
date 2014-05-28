@@ -2,8 +2,8 @@
 An Example Message Passing Library
 =
 
-I wrote this library to provide an example of a message passing system that
-supports concurrency in order to aid discussion.
+I wrote this library to provide an example of a concurrent message passing
+system in order to aid discussion.
 
 Direct use of threading primitives (mutexes, locks, condition variables,
 threads) to manage concurrency does not work well for a team of more than one.
@@ -12,7 +12,8 @@ weeks will require re-learning the concurrency rules for a system built on
 primitives. Nevertheless, I see a lot of code like this. The goal of this
 library is to demonstrate how one can encapsulate the primitives behind a
 small set of classes or functions to create a scalable, message-passing
-concurrency model that supports asynchronous protocols between actors.
+concurrency model that supports parallelization and asynchronous protocols
+between actors.
 
 The goal is *not* to provide a cross-platform, every possible use, robust for
 every occasion library. It is an example to build from and support
@@ -27,9 +28,13 @@ around exception safety, I'm happy to hear them.
 
 Building:
 -
-I built this on a Macbook Pro running OSX Mavericks using clang 3.4. I have built and tested this on Ubuntu 14.04, also with clang 3.4. Everything is standard C++, so the code should build fine on Windows with Visual Studio 2013, or later, but I haven't tested that.
+I built this on a Macbook Pro running OSX Mavericks using clang 3.4. I have
+built and tested this on Ubuntu 14.04, also with clang 3.4. Everything is
+standard C++, so the code should build fine on Windows with Visual Studio 2013,
+or later, but I haven't tested that.
 
-Anyway, just run `make`, or `make -f Makefile` to build and run the test. Output goes to the `build/lib` and `build/include` directory.
+Anyway, just run `make`, or `make -f Makefile` to build and run the test.
+Output goes to the `build/lib` and `build/include` directories.
 
 How to use:
 -
@@ -46,7 +51,7 @@ Requirements:
 * In many cases, degree of parallelization (e.g. how many threads could be
   supported) is a domain consideration, not a generic library concern. This
   number should be provided by client code when desired.
-* Serialization of messages is required in order to support an
+* Serialization of messages must be possible in order to support an
   Active Object pattern.
 
 
