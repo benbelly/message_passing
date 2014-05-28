@@ -4,6 +4,8 @@
 #include<thread>
 #include<chrono>
 #include<vector>
+#include<mutex>
+#include<algorithm>
 
 typedef std::lock_guard<std::mutex> lock_guard;
 using std::vector;
