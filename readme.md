@@ -27,7 +27,7 @@ around exception safety, I'm happy to hear them.
 
 Building:
 -
-I built this on a Macbook Pro running OSX Mavericks using clang++. I expect it would build just fine on Linux, or even Windows. But I haven't tested it yet.
+I built this on a Macbook Pro running OSX Mavericks using clang 3.4. I have built and tested this on Ubuntu 14.04, also with clang 3.4. Everything is standard C++, so the code should build fine on Windows with Visual Studio 2013, or later, but I haven't tested that.
 
 Anyway, just run `make`, or `make -f Makefile` to build and run the test. Output goes to the `build/lib` and `build/include` directory.
 
