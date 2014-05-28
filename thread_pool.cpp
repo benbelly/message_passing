@@ -29,6 +29,10 @@ std::unique_ptr<work_item_interface> work_queue::dequeue() {
     return work_item;
 }
 
+void work_queue::release() {
+    queue_signal.notify_all();
+}
+
 /*
  * Try to get the next item from the queue. Returns nullptr if there
  * is nothing available.

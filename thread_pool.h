@@ -21,7 +21,7 @@ class work_queue : public work_queue_interface {
         typedef std::unique_ptr<work_item_interface> work_item_interface_ptr;
 
         work_item_interface_ptr dequeue();
-        void release() { queue_signal.notify_all(); }
+        void release();
 
         work_item_interface_ptr get_next();
 
