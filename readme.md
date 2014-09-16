@@ -22,9 +22,9 @@ discussion.
 *A note on exceptions.* C++ has a problem with exceptions. They are just
 broken. I respect Herb Sutter, and appreciate everything he has done, but it
 bothers me that a person can write two books and make a living explaining how
-to write correct C++ exception-safe code. The language is broken, and I
-advise you to just turn exceptions off. Nevertheless, if you have suggestions
-around exception safety, I'm happy to hear them.
+to write correct C++ exception-safe code. I advise you to just turn
+exceptions off. Nevertheless, if you have suggestions around exception safety,
+I'm happy to hear them.
 
 Building:
 -
