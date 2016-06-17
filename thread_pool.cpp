@@ -16,7 +16,7 @@ void work_queue::enqueue( std::unique_ptr<work_item_interface> &work_item ) {
         lock_guard lock( queue_mutex );
         queue.push( std::move( work_item ) );
     }
-    queue_signal.notify_all();
+    queue_signal.notify_one();
 }
 
 std::unique_ptr<work_item_interface> work_queue::dequeue() {
@@ -36,7 +36,7 @@ void work_queue::release() {
 /*
  * Try to get the next item from the queue. Returns nullptr if there
  * is nothing available.
- * Does not do locking - only queue access.
+ * queue_mutex should already be locked
  */
 work_queue::work_item_interface_ptr work_queue::get_next() {
     work_item_interface_ptr work_item( nullptr );

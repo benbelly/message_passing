@@ -25,38 +25,30 @@ bool basic_async_work() {
 }
 
 bool basic_pooled_work() {
-    bool success = false;
     auto q = message_passing::get_work_queue( 3 );
 
     /* Start one, then two, then three, then four.
      * The first three finish in reverse order, followed by the fourth */
     vector<int> expected = { 3, 2, 1, 4 }, fs;
-    fs.reserve( 4 ); // Probably not needed, but I don't want to realloc
+    fs.reserve( 4 );
 
-    mutex m;
-
-    message_passing::add_work( q, [&m, &fs]() { pause( 500 );
-                                               lock_guard guard( m );
-                                               fs.push_back( 1 ); } );
-    message_passing::add_work( q, [&m, &fs]() { pause( 300 );
-                                               lock_guard guard( m );
-                                               fs.push_back( 2 ); } );
-    message_passing::add_work( q, [&m, &fs]() { pause( 100 );
-                                               lock_guard guard( m );
-                                               fs.push_back( 3 ); } );
-    message_passing::add_work( q, [&m, &fs]() { pause( 410 );
-                                               lock_guard guard( m );
-                                               fs.push_back( 4 ); } );
+    message_passing::add_work( q, [&fs]() { pause( 500 );
+                                            fs.push_back( 1 ); } );
+    message_passing::add_work( q, [&fs]() { pause( 300 );
+                                            fs.push_back( 2 ); } );
+    message_passing::add_work( q, [&fs]() { pause( 100 );
+                                            fs.push_back( 3 ); } );
+    message_passing::add_work( q, [&fs]() { pause( 410 );
+                                            fs.push_back( 4 ); } );
 
     pause( 600 );
 
-    success = expected == fs;
+    bool success = expected == fs;
 
     return success;
 }
 
 bool basic_serialized_queue() {
-    bool success = false;
     auto q = message_passing::get_serialized_queue();
 
     /* Start one, then two, then three
@@ -64,20 +56,18 @@ bool basic_serialized_queue() {
      * item in the order it is received.
      */
     vector<int> expected = { 1, 2, 3 }, fs;
-    fs.reserve( 3 ); // Probably not needed, but I don't want to realloc
+    fs.reserve( 3 );
 
-    mutex m;
-
-    message_passing::add_work( q, [&m, &fs]() { pause( 50 );
-                                               fs.push_back( 1 ); } );
-    message_passing::add_work( q, [&m, &fs]() { pause( 30 );
-                                               fs.push_back( 2 ); } );
-    message_passing::add_work( q, [&m, &fs]() { pause( 10 );
-                                               fs.push_back( 3 ); } );
+    message_passing::add_work( q, [&fs]() { pause( 50 );
+                                            fs.push_back( 1 ); } );
+    message_passing::add_work( q, [&fs]() { pause( 30 );
+                                            fs.push_back( 2 ); } );
+    message_passing::add_work( q, [&fs]() { pause( 10 );
+                                            fs.push_back( 3 ); } );
 
     pause( 120 );
 
-    success = expected == fs;
+    bool success = expected == fs;
 
     return success;
 }

@@ -8,7 +8,7 @@ using std::shared_ptr;
 using std::unique_ptr;
 using std::function;
 
-work_item_interface::work_item_interface() { }
+work_item_interface::work_item_interface() {}
 work_item_interface::~work_item_interface() {}
 
 work_queue_interface::work_queue_interface() {}
