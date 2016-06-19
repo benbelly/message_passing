@@ -48,8 +48,8 @@ bool basic_pooled_work() {
     return success;
 }
 
-bool basic_serialized_queue() {
-    auto q = message_passing::get_serialized_queue();
+bool basic_serializing_object() {
+    auto q = message_passing::get_work_queue( 1 );
 
     /* Start one, then two, then three
      * They finish in order, because the queue is serialized, executing each
@@ -76,9 +76,9 @@ int main() {
     typedef std::function<bool ()> test_func;
 
     test_func tests[] = { basic_async_work, basic_pooled_work,
-                          basic_serialized_queue };
+                          basic_serializing_object };
 
-    int tests_count = sizeof( tests ) / sizeof( test_func );
+    auto tests_count = sizeof( tests ) / sizeof( test_func );
     test_func *tests_end = tests + tests_count;
     int passed = std::count_if( tests, tests_end,
                                 [](test_func f){ return f(); } );

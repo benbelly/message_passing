@@ -29,21 +29,11 @@ class work_queue_interface {
 };
 
 /*
- * Get a queue of work to be done asynchronously.
- */
-std::shared_ptr<work_queue_interface> get_work_queue();
-
-/*
  * Get a queue of work to be done asynchronously, with a maximum of
  * 'concurrent_items' executing simultaneously.
  */
-std::shared_ptr<work_queue_interface> get_work_queue( int concurrent_items );
-
-/*
- * Get a queue of work to be done asynchronously from the enqueueing code, but
- * serially - that is, each work_item will complete before the next is started.
- */
-std::shared_ptr<work_queue_interface> get_serialized_queue();
+std::shared_ptr<work_queue_interface> get_work_queue(
+                                                int concurrent_items = 12  );
 
 /*
  * Add a function to a work_queue_interface.

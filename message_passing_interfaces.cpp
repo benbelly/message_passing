@@ -14,22 +14,21 @@ work_item_interface::~work_item_interface() {}
 work_queue_interface::work_queue_interface() {}
 work_queue_interface::~work_queue_interface() {}
 
-shared_ptr<work_queue_interface> get_work_queue() {
-    static thread_pool pool;
-    pool.start();
-    return pool.get_work_queue();
-}
+struct queue_wrapper : public work_queue_interface {
+    virtual ~queue_wrapper() {}
+    std::shared_ptr<thread_pool> thread_pool;
+    std::shared_ptr<work_queue_interface> work_queue;
+    virtual void enqueue( std::unique_ptr<work_item_interface> &work ) final {
+        work_queue->enqueue( work );
+    }
+};
 
 shared_ptr<work_queue_interface> get_work_queue( int num_concurrent_items) {
-    static thread_pool pool( num_concurrent_items );
-    pool.start();
-    return pool.get_work_queue();
-}
-
-std::shared_ptr<work_queue_interface> get_serialized_queue() {
-    static thread_pool pool( 1 );
-    pool.start();
-    return pool.get_work_queue();
+    auto work_queue = std::make_shared<queue_wrapper>();
+    work_queue->thread_pool.reset( new thread_pool( num_concurrent_items ) );
+    work_queue->work_queue = work_queue->thread_pool->get_work_queue();
+    work_queue->thread_pool->start();
+    return work_queue;
 }
 
 struct work_item_function : public work_item_interface {

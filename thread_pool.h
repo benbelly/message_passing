@@ -32,7 +32,6 @@ class work_queue : public work_queue_interface {
 
 class thread_pool {
     public:
-        thread_pool();
         thread_pool( int thread_count );
         virtual ~thread_pool();
 

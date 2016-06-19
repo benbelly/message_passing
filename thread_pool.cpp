@@ -47,11 +47,6 @@ work_queue::work_item_interface_ptr work_queue::get_next() {
     return work_item;
 }
 
-static const int MAX_THREADS = 12;
-
-thread_pool::thread_pool() : thread_pool( MAX_THREADS ) {
-}
-
 thread_pool::thread_pool( int thread_count ) :
   max_threads( thread_count ),
   queue( new work_queue() ),
