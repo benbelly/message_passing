@@ -8,12 +8,9 @@ thread primitives behind a small set of classes or functions to create a
 scalable, message-passing concurrency model that supports parallelization and
 asynchronous protocols between actors.
 
-The goal is *not* to provide a cross-platform, general use, robust library. It
-is an example for discussion.
+This is *not* to a cross-platform, general use, robust library. It is just an example for discussion.
 
-*A note on exceptions.* I advise you to just turn exceptions off for this
-example. Nevertheless, if you have suggestions around exception safety, I'm
-happy to hear them.
+If you have suggestions around exception safety, I'm happy to hear them.
 
 Building:
 -
@@ -22,8 +19,8 @@ built and tested this on Ubuntu 14.04, also with clang 3.4. Everything is
 standard C++, so the code should build fine on Windows with Visual Studio 2013,
 or later, but I haven't tested that.
 
-Anyway, just run `make`, or `make -f Makefile` to build and run the test.
-Output goes to the `build/lib` and `build/include` directories.
+Run `make`, or `make -f Makefile` to build and run the test. Output goes to the
+`build/lib` and `build/include` directories.
 
 How to use:
 -
@@ -38,23 +35,17 @@ Requirements:
 * Use standard C++ for portability.
 * Clients should not need to use any threading primitives directly.
 * In many cases, degree of parallelization (e.g. how many threads could be
-  supported) is a domain consideration, not a generic library concern. This
-  number should be provided by client code when desired.
-* Serialization of messages must be possible in order to support an
-  Active Object pattern.
-
+  supported) is a domain consideration, not a library concern. This number
+  should be provided by client code.
+* Single-thread queues must be possible in order to support an Active Object
+  pattern.
 
 To Do:
 -
 * Create an example of actors passing messages using these classes.
-* Support multiple serial queues.
-* Support multiple sets of parallel queues.
 * Examine exception safety. Even examples can improve on this.
 * Support 'tagged' queues so that clients can get a particular work queue.
 * Thread_pool running state management is ugly. Clean it up.
-* I have been challenged to use a single thread pool to support both parallel
-  and serial queues. I may do this, since it sounds interesting. More fun than
-  useful, I suppose.
 * Currently all threads in a thread-pool are created at once. I am interested
   in delaying thread creation until there is work for the thread to do. Again,
   this may be more fun than valuable to an example library.
