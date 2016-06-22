@@ -1,9 +1,9 @@
 ## Set the compiler flags
 CPP=clang++
 CPP_FLAGS=-pthread
-DEBUG=-g
+DEBUG=#-g
 WARN=-Wall -Wextra -Werror
-STD=-std=c++11
+STD=-std=c++14
 OPT=-O3
 AR=ar
 AR_ARGS=rcvs
